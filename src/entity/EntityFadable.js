@@ -67,7 +67,7 @@ const createEntityFadable(SuperClass = Entity) {
 		}
 
 		blendColor(color) {
-			return blend(this.fadeTick / 30, this.game.background, color);
+			return blend(1 - this.fadeTick / 30, color);
 		}
 	}
 }

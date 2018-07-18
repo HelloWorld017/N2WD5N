@@ -1,7 +1,7 @@
 import delay from "./decorators/delay";
 import registerAllSkills from "./skill/SkillLoader";
 
-import Keys from "./keyboard/Keys";
+import Keys from "./keyboard/Keys";/*
 import PatternCircular from "./pattern/PatternCircular";
 import PatternDrop from "./pattern/PatternDrop";
 import PatternFakey from "./pattern/PatternFakey";
@@ -9,7 +9,7 @@ import PatternLaser from "./pattern/PatternLaser";
 import PatternRain from "./pattern/PatternRain";
 import PatternThorn from "./pattern/PatternThorn";
 import PatternTriangle from "./pattern/PatternTriangle";
-import PatternTurret from "./pattern/PatternTurret";
+import PatternTurret from "./pattern/PatternTurret";*/
 import Renderer from "./render/Renderer";
 
 class Game {
@@ -34,19 +34,22 @@ class Game {
 		this.passedPatterns = -;
 		this.patterns = [];
 		this.availPatternsEasy = [
-			PatternThorn, PatternRain, PatternFakey
+			/*PatternThorn, PatternRain, PatternFakey*/
 		];
 
 		this.availPatternsNormal = [
-			PatternCircular, PatternDrop, PatternLaser
+			/*PatternCircular, PatternDrop, PatternLaser*/
 		];
 
 		this.availPatternsHard = [
-			PatternTurret, PatternTriangle
+			/*PatternTurret, PatternTriangle*/
 		];
 
 		this.preUi = [];
+		this.preUiElement = document.querySelector('#pre-ui');
+
 		this.ui = [];
+		this.uiElement = document.querySelector('#ui');
 
 		this.canvas = document.querySelector('canvas');
 		this.canvas.width = window.innerWidth;

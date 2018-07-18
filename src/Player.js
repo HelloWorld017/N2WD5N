@@ -1,7 +1,6 @@
 import "./geometry/Math";
 
 import alive from "./decorators/alive";
-import blendImage from "./render/blend";
 import chain from "./decorators/chain";
 import timeline from "./decorators/timeline";
 

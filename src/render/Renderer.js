@@ -47,7 +47,19 @@ class Renderer {
 		fill = fill === undefined ? true : fill;
 		width = width === undefined ? 0 : width;
 
+		this.ctx.beginPath();
+		this.ctx.arc(...vector.pos, radius, 0, Math.PI * 2);
 
+		if(fill) {
+			this.ctx.fillStyle = color;
+			this.ctx.fill();
+		}
+
+		if(width > 0) {
+			this.ctx.strokeStyle = color;
+			this.ctx.strokeWidth = width;
+			this.ctx.stroke();
+		}
 	}
 
 	@chain
@@ -73,7 +85,21 @@ class Renderer {
 
 		if(width > 0) {
 			this.ctx.strokeStyle = color;
+			this.ctx.strokeWidth = width;
 			this.ctx.stroke();
 		}
 	}
+
+	line(pos1, pos2, {color}) {
+		if(!color) color = WHITE;
+
+		this.ctx.beginPath();
+		this.ctx.moveTo(...pos1.pos);
+		this.ctx.lineTo(...pos2.pos);
+		this.ctx.strokeWidth = 1;
+		this.ctx.strokeStyle = color;
+		this.ctx.stroke();
+	}
 }
+
+export default Renderer;
