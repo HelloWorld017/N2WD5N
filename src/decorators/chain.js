@@ -2,7 +2,7 @@ export default function chain (target, name, descriptor) {
 	const func = descriptor.value;
 	descriptor.value = function() {
 		func.apply(this, arguments);
-		return target;
+		return this;
 	};
 
 	return descriptor;

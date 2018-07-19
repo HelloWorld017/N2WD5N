@@ -70,14 +70,14 @@ class Entity extends BoundBox {
 
 	@chain
 	spawn() {
-		this.game.lifeNote.append(this);
+		this.game.lifeNote.push(this);
 	}
 
 	@chain
 	setDead() {
 		if(this.entityId === null) return;
 
-		this.game.deathNote.append(this.entityId);
+		this.game.deathNote.push(this.entityId);
 		this.isDead = true;
 	}
 

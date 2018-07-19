@@ -1,6 +1,3 @@
-import delay from "./decorators/delay";
-import registerAllSkills from "./skill/SkillLoader";
-
 import Keys from "./keyboard/Keys";
 import ImageLoader from "./render/ImageLoader"; /*
 import PatternCircular from "./pattern/PatternCircular";
@@ -16,7 +13,7 @@ import Renderer from "./render/Renderer";
 class Game {
 	constructor() {
 		this.tick = 0;
-		this.entities = {};
+		this.entities = new Map;
 		this.players = [];
 		this.mobs = [];
 		this.deathNote = [];
@@ -24,8 +21,9 @@ class Game {
 		this.lastEntityId = 0;
 
 		this.events = [];
-		this.keyMaps = Keys.listKeys().reduce(([prev, curr) => {
+		this.keyMaps = Keys.listKeys().reduce((prev, curr) => {
 			prev[curr] = false;
+			return prev;
 		}, {});
 
 		this.imageLoader = new ImageLoader;
@@ -34,7 +32,7 @@ class Game {
 		this.height = window.innerHeight;
 		this.background = 'transparent';
 
-		this.passedPatterns = -;
+		this.passedPatterns = 0;
 		this.patterns = [];
 		this.availPatternsEasy = [
 			/*PatternThorn, PatternRain, PatternFakey*/
@@ -58,7 +56,9 @@ class Game {
 		this.canvas.width = window.innerWidth;
 		this.canvas.height = window.innerHeight;
 
-		this.renderer = new Renderer(canvas);
+		this.renderer = new Renderer(this.canvas);
+
+		this.attachListener();
 	}
 
 	handleEvent(event) {
@@ -87,19 +87,12 @@ class Game {
 				if(document.activeElement.classList.contains('native-keybinding'))
 					return undefined;
 
-				let keyString = '';
-
-				if(ev.ctrlKey) keyString += 'ctrl-';
-				if(ev.alt) keyString += 'alt-'
-				if(ev.shiftKey) keyString += 'shift-';
-				if(ev.metaKey) keyString += 'cmd-';
-
-				keyString += ev.key.toLowerCase();
-
 				this.events.push({
 					type: name.toUpperCase(),
-					key: keyString
+					key: ev.key
 				});
+
+				ev.preventDefault();
 			});
 		};
 
@@ -117,8 +110,8 @@ class Game {
 		this.entities.forEach(e => e.update(this.events));
 		this.patterns.forEach(pattern => pattern.update());
 		this.deathNote.forEach(death => {
-			if(this.entities[death]) {
-				delete this.entities[death];
+			if(this.entities.get(death)) {
+				this.entities.delete(death);
 
 				const mobId = this.mobs.findIndex(v => v.entityId === death);
 				if(mobId >= 0) {
@@ -130,7 +123,7 @@ class Game {
 		this.lifeNote.forEach(life => {
 			life.entityId = this.lastEntityId;
 			this.lastEntityId++;
-			this.entities[life.entityId] = life;
+			this.entities.set(life.entityId, life);
 		});
 
 		this.deathNote = [];
@@ -142,10 +135,8 @@ class Game {
 		this.renderBackground();
 
 		this.preUi.forEach(element => element.render(this.renderer));
-		Object.values(this.entities).forEach(entity => entity.render(this.renderer));
+		this.entities.forEach(entity => entity.render(this.renderer));
 		this.ui.forEach(element => element.render(this.renderer));
-
-		this.renderer.update();
 	}
 
 	renderBackground() {
@@ -210,7 +201,7 @@ class Game {
 					];
 			}
 
-			(new chosenPattern(this, this.players[0])).activate()
+			//(new chosenPattern(this, this.players[0])).activate()
 		}, 1000);
 	}
 }

@@ -15,11 +15,11 @@ class AimIndicator extends FadedElement {
 		super.doRender(renderer);
 		this.x = this.player.aim;
 
-		renderer.polygon((
-			(this.x - this.width / 2, this.y),
-			(this.x + this.width / 2, this.y),
-			(this.x, this.y + this.height)
-		), {color: this.blendColor(this.color)});
+		renderer.polygon([
+			[this.x - this.width / 2, this.y],
+			[this.x + this.width / 2, this.y],
+			[this.x, this.y + this.height]
+		], {color: this.blendColor(this.color)});
 	}
 };
 

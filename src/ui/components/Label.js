@@ -6,7 +6,7 @@ class Label extends FadedElement {
 	constructor(game, x, y, width, height, text, size, color="rgb(20, 20, 20)") {
 		super(game, x, y, width, height);
 
-		this.text = txt;
+		this.text = text;
 		this.font = 'KoPubDotum';
 		this.size = size;
 		this.color = color;

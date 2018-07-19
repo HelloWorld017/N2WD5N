@@ -1,10 +1,10 @@
-from ui.components.label import Label
+import Label from "./Label";
 
 
 class Score extends Label {
 	constructor(game, player) {
-		super().__init__(game, 50, 120, 400, 200, "점수: ", 32, "rgb(0, 150, 136)");
-		self.player = player;
+		super(game, 150, 170, 400, 200, "점수: ", 32, "rgb(0, 150, 136)");
+		this.player = player;
 	}
 
 	doRender(renderer) {

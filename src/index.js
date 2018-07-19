@@ -9,8 +9,9 @@ import Title from "./ui/components/Title";
 
 	const game = new Game;
 	await game.imageLoader.loadImages();
+	window.N2WD5N = game;
 
-	const title = Title(game).show();
+	const title = (new Title(game)).show();
 	let player = undefined;
 
 	setInterval(() => {
@@ -23,7 +24,7 @@ import Title from "./ui/components/Title";
 			player.spawn();
 			game.skillUi = new SkillPage(game);
 			(new Score(game, player)).show();
-			game.newPattern(end=false);
+			game.newPattern(false);
 		}
 
 		if(player !== undefined && player.isDead) {

@@ -10,7 +10,7 @@ import BoundBox from "./geometry/BoundBox";
 import {EntityLiving} from "./entity/EntityLiving";
 import EntityPlayerBullet from "./entity/EntityPlayerBullet";
 import HealthBar from "./ui/components/HealthBar";
-import Keys from "./keyboard/keys";
+import Keys from "./keyboard/Keys";
 import Vector2 from "./geometry/Vector2";
 
 
@@ -56,7 +56,7 @@ class Player extends EntityLiving {
 
 	spawn() {
 		super.spawn();
-		this.game.players.append(this);
+		this.game.players.push(this);
 		(new HealthBar(this.game, 50, 50, this)).show();
 		(new AimIndicator(this.game, this)).show();
 	}
@@ -66,14 +66,14 @@ class Player extends EntityLiving {
 		this.game.players.remove(this);
 	}
 
-	render(this, renderer) {
+	render(renderer) {
 		super.render(renderer);
 
 		const hurtAmount = 1 - (
 			Math.abs(this.hurtAnimateTick - this.maxHurtAnimateTick / 2) / (this.maxHurtAnimateTick / 2)
 		);
 
-		renderer.rect(this, `rgb(220, ${200 - hurtAmount * 100}, 80)`);
+		renderer.rect(this, {color: `rgb(220, ${200 - hurtAmount * 100}, 80)`});
 	}
 
 	doJump() {
@@ -108,7 +108,7 @@ class Player extends EntityLiving {
 	}
 
 	@chain
-	setFlyable(this, flyable = true) {
+	setFlyable(flyable = true) {
 		const image = this.game.imageLoader.images[flyable ? 'FlyEnabled' : 'FlyDisabled'];
 		const blinkImage = (new BlinkImage(this.game, this.game.width / 2, this.game.height / 2, image)).show();
 
@@ -119,8 +119,6 @@ class Player extends EntityLiving {
 	update(events) {
 		super.update(events);
 		this.updateTimeline();
-
-		this.score++;
 
 		// Movement
 		if(this.game.keyMaps[Keys.KEY_LEFT]) {
@@ -147,7 +145,7 @@ class Player extends EntityLiving {
 		}
 
 		// Bullet Fire
-		if(this.game.tick > this.lastFireTick + this.fireTick && this.game.keyMaps(Keys.KEY_FIRE)) {
+		if(this.game.tick > this.lastFireTick + this.fireTick && this.game.keyMaps[Keys.KEY_FIRE]) {
 			this.lastFireTick = this.game.tick;
 			const bullet = (new EntityPlayerBullet(this.game, this.x, this.y, this.bulletColor)).spawn();
 			bullet.rotate(bulletAngle);

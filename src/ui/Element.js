@@ -20,7 +20,7 @@ class Element {
 		this.doRender(renderer);
 	}
 
-	initRenderer(renderer) {}
+	initRender(renderer) {}
 	doRender(renderer) {}
 
 	@chain
@@ -28,8 +28,8 @@ class Element {
 		if(this.isHidden) return;
 		this.isHidden = true;
 
-		if(this.isPre) this.game.preUi.remove(this);
-		else this.game.ui.remove(this);
+		if(this.isPre) this.game.preUi.splice(this.game.preUi.indexOf(this), 1);
+		else this.game.ui.splice(this.game.ui.indexOf(this), 1);
 	}
 
 	@chain
@@ -38,8 +38,8 @@ class Element {
 
 		this.isHidden = false;
 
-		if(this.isPre) this.game.preUi.append(this);
-		else this.game.ui.append(this);
+		if(this.isPre) this.game.preUi.push(this);
+		else this.game.ui.push(this);
 	}
 
 	updateEvent(ev) {}

@@ -26,8 +26,23 @@ class Renderer {
 	}
 
 	@chain
-	drawImage(image, x, y, degree=0) {
+	drawImage(image, x, y, {degree, opacity}) {
+		let restoreNeeded = false;
+
+		if(opacity !== undefined || degree !== undefined) {
+			this.ctx.save();
+			restoreNeeded = true;
+
+			if(opacity !== undefined) this.ctx.globalAlpha = opacity;
+			if(degree !== undefined) {
+				this.ctx.translate(-x, -y);
+				this.ctx.rotate(degree / 180 * Math.PI);
+			}
+		}
+
 		this.ctx.drawImage(image, x - image.width / 2, y - image.height / 2);
+
+		if(restoreNeeded) this.ctx.restore();
 	}
 
 	@chain

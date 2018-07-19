@@ -1,6 +1,8 @@
 import blend from "../render/blend";
 import chain from "../decorators/chain";
 
+import Element from "./Element";
+
 class FadedElement extends Element {
 	constructor(game, x, y, width, height) {
 		super(game, x, y, width, height);
@@ -19,7 +21,10 @@ class FadedElement extends Element {
 	}
 
 	doHide() {
-		super.hide();
+		this.fadePhase = 'pause';
+
+		if(this.isPre) this.game.preUi.splice(this.game.preUi.indexOf(this), 1);
+		else this.game.ui.splice(this.game.ui.indexOf(this), 1);
 	}
 
 	@chain
@@ -62,7 +67,7 @@ class FadedElement extends Element {
 	}
 
 	blendColor(color) {
-		return blend(1 - this.fadeTick / 30, color);
+		return blend(this.fadeTick / 30, color);
 	}
 }
 

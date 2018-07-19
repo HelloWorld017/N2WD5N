@@ -13,6 +13,8 @@ class BoundBox extends Vector2 {
 	}
 
 	set x(newX) {
+		if(!this.min) return;
+
 		const width = this.width;
 
 		this.min.x = newX - width / 2;
@@ -24,6 +26,8 @@ class BoundBox extends Vector2 {
 	}
 
 	set y(newY) {
+		if(!this.min) return;
+
 		const height = this.height;
 
 		this.min.y = newY - height / 2;
