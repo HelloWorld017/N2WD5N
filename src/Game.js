@@ -1,7 +1,8 @@
 import delay from "./decorators/delay";
 import registerAllSkills from "./skill/SkillLoader";
 
-import Keys from "./keyboard/Keys";/*
+import Keys from "./keyboard/Keys";
+import ImageLoader from "./render/ImageLoader"; /*
 import PatternCircular from "./pattern/PatternCircular";
 import PatternDrop from "./pattern/PatternDrop";
 import PatternFakey from "./pattern/PatternFakey";
@@ -26,6 +27,8 @@ class Game {
 		this.keyMaps = Keys.listKeys().reduce(([prev, curr) => {
 			prev[curr] = false;
 		}, {});
+
+		this.imageLoader = new ImageLoader;
 
 		this.width = window.innerWidth;
 		this.height = window.innerHeight;

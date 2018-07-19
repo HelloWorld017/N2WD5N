@@ -4,26 +4,30 @@ import Score from "./ui/components/Score";
 import SkillPage from "./ui/components/SkillPage";
 import Title from "./ui/components/Title";
 
-const FPS = 60;
+(async () => {
+	const FPS = 60;
 
-const game = new Game;
-const title = Title(game).show();
-let player = undefined;
+	const game = new Game;
+	await game.imageLoader.loadImages();
 
-setInterval(() => {
-	game.update();
-	game.render();
+	const title = Title(game).show();
+	let player = undefined;
 
-	if(game.tick > 60 && !title.isHidden) {
-		title.hide();
-		player = new Player(game);
-		player.spawn();
-		game.skillUi = new SkillPage(game);
-		(new Score(game, player)).show();
-		game.newPattern(end=false);
-	}
+	setInterval(() => {
+		game.update();
+		game.render();
 
-	if(player !== undefined && player.isDead) {
-		//TODO
-	}
-}, 1000 / FPS);
+		if(game.tick > 60 && !title.isHidden) {
+			title.hide();
+			player = new Player(game);
+			player.spawn();
+			game.skillUi = new SkillPage(game);
+			(new Score(game, player)).show();
+			game.newPattern(end=false);
+		}
+
+		if(player !== undefined && player.isDead) {
+			//TODO
+		}
+	}, 1000 / FPS);
+})();

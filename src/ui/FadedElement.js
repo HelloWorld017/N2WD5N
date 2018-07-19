@@ -1,3 +1,4 @@
+import blend from "../render/blend";
 import chain from "../decorators/chain";
 
 class FadedElement extends Element {

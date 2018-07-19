@@ -1,0 +1,33 @@
+{
+  "name": "n2wd5n",
+  "version": "1.0.0",
+  "description": "4v01d1fuc4n",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HelloWorld017/N2WD5N.git"
+  },
+  "keywords": [
+    "Game"
+  ],
+  "author": "Khinenw",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/HelloWorld017/N2WD5N/issues"
+  },
+  "homepage": "https://github.com/HelloWorld017/N2WD5N#readme",
+  "dependencies": {
+    "color": "^3.0.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
+    "webpack": "^4.16.1",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.4"
+  }
+}
