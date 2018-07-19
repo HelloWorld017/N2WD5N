@@ -7,7 +7,7 @@ const createEntityTrap = (SuperClass = Entity) => {
 	return class EntityTrap extends SuperClass {
 		@alive
 		update(events) {
-			super(events);
+			super.update(events);
 
 			this.game.players.forEach(player => {
 				if(testCollision(this.boundModel, player.boundModel)) this.attack(player);

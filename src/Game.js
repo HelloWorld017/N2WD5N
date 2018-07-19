@@ -1,14 +1,14 @@
 import Keys from "./keyboard/Keys";
-import ImageLoader from "./render/ImageLoader"; /*
+import BackgroundRenderer from "./render/BackgroundRenderer";
+import ImageLoader from "./render/ImageLoader";
 import PatternCircular from "./pattern/PatternCircular";
-import PatternDrop from "./pattern/PatternDrop";
-import PatternFakey from "./pattern/PatternFakey";
-import PatternLaser from "./pattern/PatternLaser";
-import PatternRain from "./pattern/PatternRain";
-import PatternThorn from "./pattern/PatternThorn";
-import PatternTriangle from "./pattern/PatternTriangle";
-import PatternTurret from "./pattern/PatternTurret";*/
+import Player from "./Player";
 import Renderer from "./render/Renderer";
+import Score from "./ui/components/Score";
+import SkillPage from "./ui/components/SkillPage";
+import Title from "./ui/components/Title";
+
+const FPS = 60;
 
 class Game {
 	constructor() {
@@ -32,19 +32,7 @@ class Game {
 		this.height = window.innerHeight;
 		this.background = 'transparent';
 
-		this.passedPatterns = 0;
 		this.patterns = [];
-		this.availPatternsEasy = [
-			/*PatternThorn, PatternRain, PatternFakey*/
-		];
-
-		this.availPatternsNormal = [
-			/*PatternCircular, PatternDrop, PatternLaser*/
-		];
-
-		this.availPatternsHard = [
-			/*PatternTurret, PatternTriangle*/
-		];
 
 		this.preUi = [];
 		this.preUiElement = document.querySelector('#pre-ui');
@@ -57,8 +45,19 @@ class Game {
 		this.canvas.height = window.innerHeight;
 
 		this.renderer = new Renderer(this.canvas);
+		this.bgRenderer = new BackgroundRenderer(this);
+	}
+
+	async init() {
+		await this.imageLoader.loadImages();
 
 		this.attachListener();
+		this.title = (new Title(this)).show();
+
+		setInterval(() => {
+			this.update();
+			this.render();
+		}, 1000 / FPS);
 	}
 
 	handleEvent(event) {
@@ -73,6 +72,10 @@ class Game {
 
 			if(event.key === Keys.KEY_SKILL_UI_TOGGLE) {
 				this.toggleSkillWindow();
+			}
+
+			if(event.key === '1') {
+				(new PatternCircular(this, this.players[0])).activate();
 			}
 		} else if (event.type === 'KEYUP') {
 			if(this.keyMaps[event.key] !== undefined) {
@@ -129,6 +132,18 @@ class Game {
 		this.deathNote = [];
 		this.lifeNote = [];
 		this.events = [];
+
+		if(this.tick > 60 && !this.title.isHidden) {
+			this.title.hide();
+
+			const player = new Player(this);
+			player.spawn();
+
+			this.skillUi = new SkillPage(this);
+			(new Score(this, player)).show();
+
+			this.bgRenderer.initBackground();
+		}
 	}
 
 	render() {
@@ -140,8 +155,7 @@ class Game {
 	}
 
 	renderBackground() {
-		//TODO origami pattern
-		this.renderer.fill(`rgb(220, 220, 220)`);
+		this.bgRenderer.render();
 	}
 
 	toggleSkillWindow() {
@@ -153,56 +167,10 @@ class Game {
 		}
 	}
 
-	newPattern(end=true) {
+	finishPattern() {
 		if(this.players.length < 1) return;
 
-		if(end) {
-			this.players.forEach(p => p.score += 100);
-			this.passedPatterns++;
-		}
-
-		setTimeout(() => {
-			if(this.players.length < 1) return;
-
-			let chosenPattern = undefined;
-
-			if(this.passed_patterns < 4) {
-				if(Math.floor(Math.random() * 11) >= 4)
-					chosenPattern = this.availPatternsEasy[
-						Math.floor(Math.random() * this.availPatternsEasy.length)
-					];
-				else
-					chosenPattern = this.availPatternsNormal[
-						Math.floor(Math.random() * this.availPatternsNormal.length)
-					];
-
-			} else if(this.passedPatterns < 7) {
-				if(Math.floor(Math.random() * 11) >= 4)
-					chosenPattern = this.availPatternsNormal[
-						Math.floor(Math.random() * this.availPatternsNormal.length)
-					];
-				else
-					chosenPattern = this.availPatternsEasy[
-						Math.floor(Math.random() * this.availPatternsEasy.length)
-					];
-
-			} else {
-				if(Math.floor(Math.random() * 11) >= 4)
-					chosenPattern = this.availPatternsHard[
-						Math.floor(Math.random() * this.availPatternsHard.length)
-					];
-				else if(Math.floor(Math.random() * 11) >= 8)
-					chosenPattern = this.availPatternsEasy[
-						Math.floor(Math.random() * this.availPatternsEasy.length)
-					];
-				else
-					chosenPattern = this.availPatternsNormal[
-						Math.floor(Math.random() * this.availPatternsNormal.length)
-					];
-			}
-
-			//(new chosenPattern(this, this.players[0])).activate()
-		}, 1000);
+		this.players.forEach(p => p.score += 100);
 	}
 }
 

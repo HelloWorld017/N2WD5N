@@ -1,26 +1,32 @@
+import Vector2 from "./Vector2";
+
 function getAxis(polygon) {
 	const sides = [];
 
 	polygon.reduce((p1, p2) => {
-		const sideVector = p2.subtract(p1);
-		angle = Math.atan2(p1.x - p2.x, p1.y - p2.y);
-		sides.push(angle);
-		sides.push(angle + Math.PI / 2);
+		const sideVector = p2.clone().subtract(p1);
+
+		sides.push(sideVector);
+		sides.push(sideVector.perp());
+
+		return p2;
 	}, polygon[polygon.length - 1]);
 
 	return sides;
 }
 
 function testCollision(o1, o2) {
-	axes = getAxis(o1).concat(o2);
+	o1 = o1.map(v => new Vector2(...v));
+	o2 = o2.map(v => new Vector2(...v));
+	const axes = getAxis(o1).concat(getAxis(o2));
 
-	return axes.every(axis => {
+	return !axes.some(axis => {
 		const o1Points = o1.map(point => axis.dot(point));
 		const o2Points = o2.map(point => axis.dot(point));
 
 		return !(
-			Math.min(...o1_points) < Math.max(...o2_points) &&
-			Math.min(...o2_points) < Math.max(...o1_points)
+			Math.min(...o1Points) < Math.max(...o2Points) &&
+			Math.min(...o2Points) < Math.max(...o1Points)
 		);
 	});
 }

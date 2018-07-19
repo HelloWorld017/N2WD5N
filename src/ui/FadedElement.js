@@ -17,7 +17,7 @@ class FadedElement extends Element {
 
 		this.isHidden = true;
 		this.fadePhase = 'hide';
-		this.fadeTick = this.maxFadeTick;
+		//this.fadeTick = this.maxFadeTick;
 	}
 
 	doHide() {
@@ -36,7 +36,7 @@ class FadedElement extends Element {
 		if(this.isPre) this.game.preUi.push(this);
 		else this.game.ui.push(this);
 
-		this.fadeTick = 0;
+		//this.fadeTick = 0;
 		this.fadePhase = 'show';
 	}
 

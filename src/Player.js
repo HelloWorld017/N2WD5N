@@ -73,6 +73,10 @@ class Player extends EntityLiving {
 			Math.abs(this.hurtAnimateTick - this.maxHurtAnimateTick / 2) / (this.maxHurtAnimateTick / 2)
 		);
 
+		/* renderer.rect(this, {
+			color: `rgb(${hurtAmount * 170 + 32}, ${hurtAmount * 90 + 32}, ${hurtAmount * 50 + 32})`
+		}); */
+
 		renderer.rect(this, {color: `rgb(220, ${200 - hurtAmount * 100}, 80)`});
 	}
 
